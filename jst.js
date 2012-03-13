@@ -13,7 +13,6 @@ window['jst'] = {};
   var htmlCodes = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'},
       htmlre = /&(?!\w+;)|<|>|"/g,
       htmlEscape = function (src) { return htmlCodes[src]; },
-      linere = /(\r\n|\r|\n)/g,
       //
       _cache = {},
       _options = {
@@ -30,18 +29,6 @@ window['jst'] = {};
 
   filters['e'] = filters['escape'] = function(src) {
     return typeof src !== 'string' ? src : src.replace(htmlre, htmlEscape);
-  }
-
-  filters['linebreaks'] = function(src) {
-    return '<p>' + src.split(/\r\n|\n/g).join('</p><p>') + '</p>';
-  }
-
-  filters['linebreaksbr'] = function(src) {
-    return src.replace(linere, '<br>$1');
-  }
-
-  filters['add'] = function(value) {
-    return function(src) { return Number(value) + Number(src); };
   }
 
   var prefixes = [
