@@ -31,24 +31,24 @@ window['jst'] = {};
   }
 
   var prefixes = [
-        // s         , c     , v
-        [''          , '"; ' , '" + '     ] , // s
-        [' out += "' , ' '   , ' out += ' ] , // c
-        [' + "'      , '; '  , ' + '      ] , // v
-        ['"'         , ''    , ''         ] , // n
-        ['"; '       , ' '   , '; '       ]   // end
+        //  s    ,  c    ,  v
+        [''      , '"; ' , '"+'   ] , // s
+        ['_o+="' , ''    , '_o+=' ] , // c
+        ['+"'    , '; '  , '+'    ] , // v
+        ['"'     , ''    , ''     ] , // n
+        ['"; '   , ''    , ';'    ] // end
       ],
       codere = /\{[%\{] (.+?) [%\}]\}/g;
 
   var compile = exports.compile = function(ctx) {
-    var m, i = 0, code = 'var out = ', last = 3 /* n */;
+    var m, i = 0, code = 'var _o = ', last = 3 /* n */;
 
     _options.useIt = /{{ (e\()?it\./.test(ctx);
 
     ctx = ctx.replace(/[\t\r\n]/g, '').replace(/\{#.+?#\}/g, '')
 
     if (!_options.useIt) {
-      code += '""; with(it) {';
+      code += '"";with(it){';
       last = 1 /* c */;
     }
 
@@ -78,10 +78,10 @@ window['jst'] = {};
     code += prefixes[4 /* end */][last];
 
     if (!_options.useIt)
-      code += '} ';
+      code += '}';
 
-    code += 'return out;';
-    //console.log(code);
+    code += 'return _o;';
+    console.log(code);
 
     var fn = new Function('it, filters', code);
 
