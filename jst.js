@@ -14,7 +14,6 @@ window['jst'] = {};
       htmlre = /&(?!\w+;)|<|>|"/g,
       htmlEscape = function (src) { return htmlCodes[src]; },
       //
-      _cache = {},
       _options = {
         useIt: false
       };
@@ -89,18 +88,6 @@ window['jst'] = {};
     return function(args) {
       return fn.call(this, args, filters);
     }
-  }
-
-  var render = exports.render = function(ctx, args) {
-    var fn;
-    if (typeof crc32 === 'function') {
-      var ck = crc32(ctx);
-      fn = _cache[ck];
-      if (typeof fn === 'undefined')
-        fn = _cache[ck] = compile(ctx);
-    } else
-      fn = compile(ctx);
-    return fn(args);
   }
 
 })(jst);
