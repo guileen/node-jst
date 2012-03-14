@@ -21,6 +21,12 @@ window['jst'] = {};
   var filters = exports['filters'] = {};
 
   function convertFilters(src) {
+    return src.split('||').map(function(exp) {
+        return _convertFilters(exp);
+    }).join('||');
+  }
+
+  function _convertFilters(src) {
     return src.split('|').reduce(function(varname, filter) {
         return 'filters.' + filter + '(' + varname + ')';
     });
