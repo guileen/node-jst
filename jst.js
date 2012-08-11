@@ -1,14 +1,11 @@
 /**
- * Node-jst for browsers
+ * @preserve Node-jst for browsers
  * Copyright(c) 2011 Shaun Li <shonhen@gmail.com>
  * MIT Licensed
  */
 
-// compiler
-
-window['jst'] = {};
-
-;(function(exports) {
+;(function() {
+  var jst = this['jst'] = {};
 
   var htmlCodes = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'},
       htmlre = /&(?!\w+;)|<|>|"/g,
@@ -18,7 +15,7 @@ window['jst'] = {};
         useIt: false
       };
 
-  var filters = exports['filters'] = {};
+  var filters = jst['filters'] = {};
 
   function convertFilters(src) {
     return src.split('||').map(function(exp) {
@@ -28,7 +25,7 @@ window['jst'] = {};
 
   function _convertFilters(src) {
     return src.split('|').reduce(function(varname, filter) {
-        return 'filters.' + filter + '(' + varname + ')';
+        return 'filters.' + filter.trim() + '(' + varname.trim() + ')';
     });
   }
 
@@ -46,7 +43,7 @@ window['jst'] = {};
       ],
       codere = /\{[%\{] (.+?) [%\}]\}/g;
 
-  var compile = exports.compile = function(ctx) {
+  var compile = jst.compile = function(ctx) {
     var m, i = 0, code = 'var _o = ', last = 3 /* n */;
 
     _options.useIt = /{{ (e\()?it\./.test(ctx);
@@ -87,7 +84,6 @@ window['jst'] = {};
       code += '}';
 
     code += 'return _o;';
-    console.log(code);
 
     var fn = new Function('it, filters', code);
 
@@ -96,5 +92,5 @@ window['jst'] = {};
     }
   }
 
-})(jst);
+})();
 
